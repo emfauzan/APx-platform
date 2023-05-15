@@ -12,7 +12,7 @@ from viewer import *
 customtkinter.set_appearance_mode("Light")
 customtkinter.set_default_color_theme("blue")
 
-class Myapp():
+class Myapp(): # Class for GUI
 
     def __init__(self):
         self.root = customtkinter.CTk()
@@ -91,21 +91,20 @@ class Myapp():
         self.var = customtkinter.IntVar(value=getCurrentMasterVolume())
         self.scale = customtkinter.CTkSlider(self.root, from_=0, to=100, variable=self.var, command=setMasterVolume, orientation="horizontal", button_corner_radius=3, button_length=20)
         self.scale.grid(row=11, column=1)
-        self.vol_label = customtkinter.CTkLabel(root, font=("Nunito",15))
-        self.vol_label.configure(text=selection)
-        self.vol_label.grid(row=12, column=1)
+        self.label = customtkinter.CTkLabel(self.root, font=("Nunito",15))
+        self.label.configure(text=displayCurrentVolume())
+        #self.label.grid(row=12, column=1)
         
-        
-    def open_file(self):
+    def open_file(self): # Method for load JSON file
         filetypes = [("Json File", "*.json")] 
         filenames = fd.askopenfilename(title="Open File", filetypes=filetypes)
         df = pd.read_json(filenames)
     
-    def files(self):
+    def files(self): # Methon for load dir APx API
         self.foldername = filedialog.askdirectory(initialdir = "C:\Program Files\Audio Precision\APx500 8.0\API", title="C:\Program Files\Audio Precision\APx500 8.0\API")
         self.entry_folder.configure(text=self.foldername)
 
-    def generator(self):
+    def generator(self): # Child GUI for Report Generator
         self.report = tk.Toplevel(self.root)
         self.report.geometry("300x250")
         self.report.title("Report Generator")
@@ -123,18 +122,18 @@ class Myapp():
         self.cek4.grid(row=5, column=1)
         self.cek5 = customtkinter.CTkRadioButton(self.report, text="Statistical Table",font=("Ubuntu", 12))
         self.cek5.grid(row=6, column=1)
+        
 
         self.button = customtkinter.CTkButton(self.report, text="Generate!", font=("Ubuntu", 12))
         self.button.grid(row=7, column=1, padx=(50, 50), pady=(5, 10))
     
-    def toggle_mute(self):
+    def toggle_mute(self): # to get the present state of the toggle button
         if self.toggleBtn.cget('text') == 'Mute Off':
             self.toggleBtn.configure(text='Mute On')
             mute(1)
         else:
             self.toggleBtn.configure(text='Mute Off')
             mute(0)
-            
 
 app = Myapp()
 app.root.mainloop()
